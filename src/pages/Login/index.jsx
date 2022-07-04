@@ -42,10 +42,9 @@ const Login = () => {
             />
           </div>
           <div className="h-2"></div>
-          <input
-            type="submit"
-            className="bg-white w-full py-2 rounded-lg cursor-pointer"
-          />
+          <button className="w-full py-2 rounded-lg cursor-pointer bg-red-700 hover:bg-red-800 text-white">
+            Login
+          </button>
         </form>
       </div>
     </div>
