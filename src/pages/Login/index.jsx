@@ -6,7 +6,7 @@ const Login = () => {
 
   return (
     <div className="h-screen flex  items-center justify-center bg-black">
-      <div className="border-4 p-10 rounded-lg max-w-md w-full flex flex-col items-center justify-center">
+      <div className=" p-10 rounded-lg max-w-md w-full flex flex-col items-center justify-center border-4">
         <p className="text-5xl text-white">Login</p>
         <div className="h-5"></div>
         <form

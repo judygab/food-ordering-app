@@ -4,8 +4,8 @@ import cartIcon from '../assets/icons/cart.svg';
 
 export const Header = () => {
   return (
-    <nav id="header" className="bg-black  text-white">
-      <div className="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 py-2">
+    <nav id="header" className="bg-black  text-white ">
+      <div className="w-full  mx-auto flex flex-wrap items-center justify-between mt-0 py-2 ">
         <div className="pl-4 flex items-center">
           <Link
             to="/"
@@ -14,7 +14,9 @@ export const Header = () => {
             <img src={foody} alt="" className="w-40 h-40 object-cover" />
           </Link>
         </div>
-        <div className="block lg:hidden pr-4">
+        {/* Desktop */}
+
+        {/* <div className="block lg:hidden pr-4">
           <button
             id="nav-toggle"
             className="flex items-center p-1 text-pink-800 hover:text-gray-900 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
@@ -28,23 +30,20 @@ export const Header = () => {
               <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
             </svg>
           </button>
-        </div>
-        <div className="flex items-center justify-between space-x-10">
+        </div> */}
+        {/* Mobile */}
+        <div className="hidden lg:flex items-center justify-between space-x-10">
           <Link to="/" className="text-xl">
             Home
           </Link>
-          <Link to="/" className="text-xl">
+          <a href="#about" className="text-xl">
             About
-          </Link>
-          <Link to="/" className="text-xl">
-            Categories
-          </Link>
-          <Link to="/" className="text-xl">
-            Order
-          </Link>
+          </a>
         </div>
-        <div className="flex items-center justify-center space-x-4">
-          <Link to="/cart">
+        {/* Desktop */}
+        {/* margin on the right as as logo is transparent so to make it look even */}
+        <div className="hidden lg:flex items-center justify-center space-x-4 mr-10">
+          <Link to="/cart" className="mr-4">
             <img src={cartIcon} alt="" />
           </Link>
           <Link to="/login">Log In</Link>

@@ -1,8 +1,23 @@
+import clsx from 'clsx';
+import { useLocation } from 'react-router-dom';
 import aboutImage from '../assets/images/about-image.png';
 
+/**
+ *
+ * Hide about page in login and register screen
+ */
+
 export const About = () => {
+  const location = useLocation();
+
   return (
-    <div className="bg-white">
+    <div
+      className={clsx('bg-white', {
+        hidden:
+          location.pathname === '/login' || location.pathname === '/register',
+      })}
+      id="about"
+    >
       <div className="p-24 grid grid-cols-2">
         <div className="">
           <h2 className="text-2xl font-medium">About Us</h2>
