@@ -5,7 +5,7 @@ const Register = () => {
   const onSubmit = (data) => console.log(data);
 
   return (
-    <div className="h-screen flex  items-center justify-center">
+    <div className="h-screen bg-black flex  items-center justify-center">
       <div className="border-4 p-10 rounded-lg max-w-md w-full flex flex-col items-center justify-center">
         <p className="text-5xl text-white">Register</p>
         <div className="h-5"></div>

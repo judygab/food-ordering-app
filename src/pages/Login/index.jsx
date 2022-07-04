@@ -5,8 +5,8 @@ const Login = () => {
   const onSubmit = (data) => console.log(data);
 
   return (
-    <div className="h-screen flex  items-center justify-center">
-      <div className="border-4 p-10 rounded-lg max-w-md w-full flex flex-col items-center justify-center">
+    <div className="h-screen flex  items-center justify-center bg-black">
+      <div className=" p-10 rounded-lg max-w-md w-full flex flex-col items-center justify-center border-4">
         <p className="text-5xl text-white">Login</p>
         <div className="h-5"></div>
         <form
@@ -42,10 +42,9 @@ const Login = () => {
             />
           </div>
           <div className="h-2"></div>
-          <input
-            type="submit"
-            className="bg-white w-full py-2 rounded-lg cursor-pointer"
-          />
+          <button className="w-full py-2 rounded-lg cursor-pointer bg-red-700 hover:bg-red-800 text-white">
+            Login
+          </button>
         </form>
       </div>
     </div>
