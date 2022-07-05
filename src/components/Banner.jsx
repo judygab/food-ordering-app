@@ -13,7 +13,7 @@ export const Banner = () => {
         <div className="btn-container">
           <Button variant="secondary">Order Now</Button>
           <a
-            href="/"
+            href="/menu"
             className="text-yellow-400 hover:text-yellow-500 text-decoration-line px-3"
           >
             See Menu
