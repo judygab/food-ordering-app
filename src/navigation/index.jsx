@@ -3,8 +3,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from '../pages/Home';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
+import Menu from '../pages/Menu';
 import { Header } from '../components/Header';
-import { About } from '../components/About';
 import Cart from '../pages/Cart';
 
 const Navigation = () => {
@@ -16,8 +16,8 @@ const Navigation = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/menu" element={<Menu />} />
       </Routes>
-      <About />
     </BrowserRouter>
   );
 };
