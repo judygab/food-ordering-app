@@ -24,7 +24,6 @@ export const ProductsPreview = ({ products }) => {
       };
 
     return (
-        // <div className="container mx-auto w-2/3 flex flex-wrap">
         <div className="container mx-auto pb-4 w-2/3">
             <Carousel responsive={responsive}>
                 {products.map((product, index) => {
