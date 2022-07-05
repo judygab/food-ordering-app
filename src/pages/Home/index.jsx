@@ -7,7 +7,12 @@ const Home = () => {
     <div className="bg-black overflow-hidden">
       <Banner />
       <About />
-      <ProductsPreview products={[{name: 'salad', description: 'The Apollotech B340 is an affordable wireless mouse with reliable connectivity, 12 months battery life and modern design. The Apollotech B340 is an affordable wireless mouse with reliable connectivity, 12 months battery life and modern design'}]}/>
+      <ProductsPreview products={[
+        {name: 'salad', description: 'The Apollotech B340 is an affordable wireless mouse with reliable connectivity, 12 months battery life and modern design. The Apollotech B340 is an affordable wireless mouse with reliable connectivity, 12 months battery life and modern design'},
+        {name: 'salad', description: 'The Apollotech B340 is an affordable wireless mouse with reliable connectivity, 12 months battery life and modern design. The Apollotech B340 is an affordable wireless mouse with reliable connectivity, 12 months battery life and modern design'},
+        {name: 'salad', description: 'The Apollotech B340 is an affordable wireless mouse with reliable connectivity, 12 months battery life and modern design. The Apollotech B340 is an affordable wireless mouse with reliable connectivity, 12 months battery life and modern design'},
+        {name: 'salad', description: 'The Apollotech B340 is an affordable wireless mouse with reliable connectivity, 12 months battery life and modern design. The Apollotech B340 is an affordable wireless mouse with reliable connectivity, 12 months battery life and modern design'},
+        ]}/>
     </div>
   );
 };
