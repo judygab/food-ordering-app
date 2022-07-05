@@ -54,3 +54,28 @@
     font-style: normal;
   }
 }
+
+.line-clamp-4 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  max-height: 109px;
+  line-height: 1.26;
+}
+
+/* Customizing react-carousel styling &*/
+.products-carousel .carousel .control-prev.control-arrow:before {
+  content: url("./assets/icons/arrow-left-svgrepo-com.svg") !important;
+  margin-right: 0px;
+}
+
+.products-carousel .carousel .control-next.control-arrow:before {
+  content: url("./assets/icons/arrow-right-svgrepo-com.svg") !important;
+  border-left: 0px;
+}
+
+.products-carousel .carousel.carousel-slider {
+  padding: 20px;
+}
