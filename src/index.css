@@ -5,50 +5,38 @@
 /**
  * @license
  *
- * Font Family: Switzer
- * Designed by: Jérémie Hornus
- * URL: https://www.fontshare.com/fonts/switzer
+ * Font Family: Clash Display
+ * Designed by: Indian Type Foundry
+ * URL: https://www.fontshare.com/fonts/clash-display
  * © 2022 Indian Type Foundry
  *
  * Font Styles:
- * Switzer Regular
- * Switzer Medium
- * Switzer Bold
-
+ * Clash Display Regular
+ * Clash Display Medium
+ * Clash Display Bold
  *
-*/
-
-/**
-* This is a variable font
-* You can controll variable axes as shown below:
-* font-variation-settings: 'wght' 400.0;
-*
-* available axes:
-
-* 'wght' (range from 100.0 to 900.0)
-
 */
 
 @layer base {
   @font-face {
-    font-family: 'Switzer-Regular';
-    src: url('./assets/fonts/Switzer-Regular.woff2') format('woff2');
+    font-family: 'ClashDisplay-Regular';
+    src: url('./assets/fonts/ClashDisplay-Regular.woff2') format('woff2');
     font-weight: 400;
     font-display: swap;
     font-style: normal;
   }
 
   @font-face {
-    font-family: 'Switzer-Medium';
-    src: url('./assets/fonts/Switzer-Medium.woff2') format('woff2');
+    font-family: 'ClashDisplay-Medium';
+    src: url('./assets/fonts/ClashDisplay-Medium.woff2') format('woff2');
     font-weight: 500;
     font-display: swap;
     font-style: normal;
   }
 
   @font-face {
-    font-family: 'Switzer-Bold';
-    src: url('./assets/fonts/Switzer-Bold.woff2') format('woff2');
+    font-family: 'ClashDisplay-Bold';
+    src: url('./assets/fonts/ClashDisplay-Bold.woff2') format('woff2');
     font-weight: 700;
     font-display: swap;
     font-style: normal;
@@ -67,12 +55,12 @@
 
 /* Customizing react-carousel styling &*/
 .products-carousel .carousel .control-prev.control-arrow:before {
-  content: url("./assets/icons/arrow-left-svgrepo-com.svg") !important;
+  content: url('./assets/icons/arrow-left-svgrepo-com.svg') !important;
   margin-right: 0px;
 }
 
 .products-carousel .carousel .control-next.control-arrow:before {
-  content: url("./assets/icons/arrow-right-svgrepo-com.svg") !important;
+  content: url('./assets/icons/arrow-right-svgrepo-com.svg') !important;
   border-left: 0px;
 }
 
