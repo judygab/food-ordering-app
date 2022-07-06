@@ -1,3 +1,5 @@
+import ProductDetailCard from './ProductDetailCard';
+
 export const TabItem = ({ title, index, active, setActive }) => {
   const className = active
     ? 'border-b-yellow-400'
@@ -14,16 +16,7 @@ export const TabItem = ({ title, index, active, setActive }) => {
           </span>
         </button>
       </a>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto iste vero
-        eveniet dignissimos facilis perspiciatis ex inventore, necessitatibus
-        rem nulla ad doloribus omnis laboriosam neque quaerat, voluptates nemo
-        ipsa recusandae quod id. Sapiente voluptate aliquid rerum modi beatae
-        molestiae, nobis eveniet. Exercitationem debitis libero nesciunt iusto,
-        vitae officia molestiae ut facilis consequuntur impedit ab voluptatibus
-        dolore, minima ea aperiam eveniet deserunt cum ullam recusandae
-        doloremque reprehenderit at. Vitae, nisi beatae eius illo consectetur
-      </p>
+      <ProductDetailCard />
     </div>
   );
 };
