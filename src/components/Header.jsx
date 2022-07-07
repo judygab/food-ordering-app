@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import foody from '../assets/images/foody.png';
 import cartIcon from '../assets/icons/cart.svg';
 
-export const Header = () => {
+export const Header = ({ cartCount }) => {
   return (
     <nav id="header" className="bg-black  text-white ">
       <div className="w-full  mx-auto flex flex-wrap items-center justify-between mt-0 py-2 ">
@@ -43,8 +43,9 @@ export const Header = () => {
         {/* Desktop */}
         {/* margin on the right as as logo is transparent so to make it look even */}
         <div className="hidden lg:flex items-center justify-center space-x-4 mr-10">
-          <Link to="/cart" className="mr-4">
+          <Link to="/cart" className="mr-4 relative">
             <img src={cartIcon} alt="" />
+            {cartCount > 0 ? <div className="rounded-full bg-yellow-400 text-white inline-flex justify-center items-center w-full absolute -top-1 -right-1">{cartCount}</div> : null}
           </Link>
           <Link to="/login">Log In</Link>
           <Link to="/register" className="bg-gold p-4 rounded">
