@@ -16,7 +16,7 @@ export const TabItem = ({ title, index, active, setActive }) => {
           </span>
         </button>
       </a>
-      <ProductDetailCard />
+      {/* <ProductDetailCard /> */}
     </div>
   );
 };
