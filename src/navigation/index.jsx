@@ -1,4 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { cartProducts } from '../stores/cart/cartSlice';
 
 import Home from '../pages/Home';
 import Login from '../pages/Login';
@@ -8,9 +10,11 @@ import { Header } from '../components/Header';
 import Cart from '../pages/Cart';
 
 const Navigation = () => {
+  const productsInCart = useSelector(cartProducts);
+
   return (
     <BrowserRouter>
-      <Header />
+      <Header cartCount={productsInCart ? productsInCart.length : 0} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
