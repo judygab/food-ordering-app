@@ -1,8 +1,16 @@
 import { ProductPreviewCard } from "./ProductPreviewCard";
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+import { useDispatch } from "react-redux";
+import { addToCart } from "../stores/cart/cartSlice";
 
 export const ProductsPreview = ({ products }) => {
+  const dispatch = useDispatch();
+
+  const onAddProduct = (product) => {
+    dispatch(addToCart(product));
+  }
+  
     const responsive = {
         superLargeDesktop: {
           // the naming can be any, depends on you.
@@ -29,7 +37,7 @@ export const ProductsPreview = ({ products }) => {
                 {products.map((product, index) => {
                         return (
                             <div className="w-full p-3" key={index}>
-                                <ProductPreviewCard product={product} />
+                                <ProductPreviewCard product={product} onAddProduct={onAddProduct} />
                             </div>
                         );
                     })}
