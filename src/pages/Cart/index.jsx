@@ -3,14 +3,14 @@ import Button from "../../components/elements/Button";
 import { ProductsSummary } from "../../components/ProductsSummary";
 import { useSelector } from "react-redux";
 import { getProductsCart } from "../../stores/cart/cartSlice";
-import { PaymentForm } from "../../components/PaymentForm";
+import { StripeWrapper } from "../../components/PaymentForm";
 import { AddressForm } from "../../components/AddressForm";
 import useTabSwitch from "../../hooks/useTabSwitch";
 import { ReactComponent as ArrowRightSvg } from "../../assets/icons/arrow-right-long-svgrepo-com.svg";
 
 const Cart = () => {
   const cart = useSelector(getProductsCart);
-  const tabs = ['Summary', 'Payment', 'Delivery'];
+  const tabs = ['Summary', 'Delivery', 'Payment'];
   const [currentTab, handleTabSwitch] = useTabSwitch(tabs, 'Summary');
 
   if (!cart || cart.products.length === 0) {
@@ -26,20 +26,17 @@ const Cart = () => {
         <div className={`tabs ${currentTab !== 'Summary' ? "hidden" : ""}`}>
           <ProductsSummary />
           <div className="flex justify-end p-2">
-            <Button variant="dark" className="flex items-center" onClick={() => handleTabSwitch('Payment')}><span className="mr-1">Next</span><ArrowRightSvg /></Button>
-          </div>
-        </div>
-        <div className={`tabs ${currentTab !== 'Payment' ? "hidden" : ""}`}>
-          <PaymentForm />
-          <div className="flex justify-end p-2">
             <Button variant="dark" className="flex items-center" onClick={() => handleTabSwitch('Delivery')}><span className="mr-1">Next</span><ArrowRightSvg /></Button>
           </div>
         </div>
         <div className={`tabs ${currentTab !== 'Delivery' ? "hidden" : ""}`}>
           <AddressForm /> 
-          <div className="flex justify-center p-2">
-            <Button>Place Order</Button>
+          <div className="flex justify-end p-2">
+            <Button variant="dark" className="flex items-center" onClick={() => handleTabSwitch('Payment')}><span className="mr-1">Next</span><ArrowRightSvg /></Button>
           </div>
+        </div>
+        <div className={`tabs ${currentTab !== 'Payment' ? "hidden" : ""}`}>
+          <StripeWrapper />
         </div>
     </div>
   );

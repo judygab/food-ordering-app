@@ -1,40 +1,77 @@
 import { useForm } from 'react-hook-form';
+import { CardElement, useElements, useStripe , Elements} from "@stripe/react-stripe-js";
+import { loadStripe } from '@stripe/stripe-js';
+import { useEffect, useState } from 'react';
+import Button from './elements/Button';
+import { useNavigate } from "react-router-dom";
 
-export const PaymentForm = () => {
-    const onSubmit = (data) => console.log(data);
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+
+export const StripeWrapper = () => {
     return (
-        <form className="md:w-2/3 md:mx-auto px-2 pt-1">
-            <h3 className="pt-4 text-2xl md:text-center">Please enter your card details</h3>
-            <div className="mb-4 md:flex md:justify-between">
-                <div className="mb-4 md:mr-2 md:mb-0 flex-1">
-                    <label className="block mb-2 text-sm font-bold text-gray-700" for="firstName">First Name</label>
-                    <input
-                        class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                        id="firstName"
-                        type="text"
-                        placeholder="First Name"
-                    />
-                </div>
-                <div className="mb-4 md:mr-2 md:mb-0 flex-1">
-                    <label className="block mb-2 text-sm font-bold text-gray-700" for="lastName">Last Name</label>
-                    <input
-                        class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                        id="lastName"
-                        type="text"
-                        placeholder="First Name"
-                    />
-                </div>
-            </div>     
-            <div className="mb-4">
-                <label class="block mb-2 text-sm font-bold text-gray-700" for="cardNumber">
-                    Card Number
-                </label>
-                <input
-                    class="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                    id="email"
-                    type="text"
-                    placeholder="Card Number"
-                />
+        <Elements stripe={stripePromise}>
+            <PaymentForm />
+        </Elements>
+    )
+}
+
+const PaymentForm = () => {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
+    const elements = useElements();
+    const stripe = useStripe();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!stripe || !elements) {
+            return;
+        }
+        setLoading(true);
+        try {
+        // Create payment intent on the server
+        const { error: backendError, clientSecret } = await fetch('http://localhost:8080/create-payment-intent', {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json' 
+            },
+            body: JSON.stringify({
+                paymentMethodType: 'card',
+                currency: 'usd',
+        })}).then(r => r.json());
+
+        // Confirm the payment on the client
+        const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(
+            clientSecret, {
+                payment_method: {
+                    card: elements.getElement(CardElement),
+                }
+            }
+        )
+
+        if (backendError || stripeError) {
+            setError(backendError || stripeError);
+        }  else if (paymentIntent.status === 'succeeded') {
+            // clear cart
+            navigate('/payment-success');
+        }
+        } catch (err) {
+            console.log(err);
+        }
+        setLoading(false);
+
+    }
+
+    return (
+        <form className="md:w-2/3 md:mx-auto px-2 pt-1" id="payment-form" onSubmit={handleSubmit}>
+            <label htmlFor="card-element" className="pt-4 text-2xl md:text-center">Please enter your card details</label>
+            <div className="my-4">
+                <CardElement id="card-element" />
+            </div>
+            <div className="flex justify-center p-2">
+                <Button type="submit" disabled={true}>{
+                    loading ? 'Loading...' : 'Pay Now'
+                }</Button>
             </div>
         </form>
     )

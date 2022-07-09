@@ -81,8 +81,10 @@ app.post('/webhook', async (req, res) => {
 
 app.post('/create-payment-intent', async (req, res) => {
   try {
-    const { orderItems, shippingAddress, user } = req.body;
-    const totalPrice = calculateOrderAmount(orderItems);
+    // const { orderItems, shippingAddress, user } = req.body;
+    // const totalPrice = calculateOrderAmount(orderItems);
+    // TEMP
+    const totalPrice = 100;
     const paymentIntent = await stripe.paymentIntents.create({
       amount: totalPrice,
       currency: 'usd',
@@ -91,20 +93,20 @@ app.post('/create-payment-intent', async (req, res) => {
     const taxPrice = 0;
     const shippingPrice = 0;
 
-    const order = new Order({
-      orderItems,
-      shippingAddress,
-      paymentMethod: 'stripe',
-      totalPrice,
-      taxPrice,
-      shippingPrice,
-      totalPrice: totalPrice,
-      user: user._id,
-    });
-    await order.save();
+    // const order = new Order({
+    //   orderItems,
+    //   shippingAddress,
+    //   paymentMethod: 'stripe',
+    //   totalPrice,
+    //   taxPrice,
+    //   shippingPrice,
+    //   totalPrice: totalPrice,
+    //   user: user._id,
+    // });
+    // await order.save();
     res.send({
       clientSecret: paymentIntent.client_secret,
-      orderId: order._id,
+      // orderId: order._id,
     });
   } catch (error) {
     res.status(400).json({
