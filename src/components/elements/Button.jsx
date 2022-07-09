@@ -17,6 +17,7 @@ const sizes = {
 const variants = {
   primary: 'bg-marigold focus:ring-marigold',
   secondary: 'bg-tomato focus:ring-tomato',
+  dark: 'bg-black focus:ring-white',
 };
 
 const Button = ({
