@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { TabItem } from './TabItem';
 
-export const Tabs = ({ list }) => {
-  const [activeTab, setActiveTab] = useState(0);
+export const Tabs = ({ list, activeTab, onTabSwitch }) => {
 
   return (
     <div className="sticky z-1900 bg-white">
@@ -13,8 +12,8 @@ export const Tabs = ({ list }) => {
               title={item}
               key={index}
               index={index}
-              active={activeTab === index}
-              setActive={setActiveTab}
+              active={activeTab === item}
+              setActive={onTabSwitch}
             />
           );
         })}
