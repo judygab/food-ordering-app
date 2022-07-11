@@ -1,10 +1,56 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Button from '../../components/elements/Button';
 import Text from '../../components/elements/Text';
+import { app } from '../../firebase-config';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  Routes,
+  Route,
+  useNavigate
+} from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
+  let navigate = useNavigate();
   const { register, handleSubmit } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const [loading, setLoading] = useState(false);
+
+  const onSubmit = (data) => {
+    setLoading(true);
+    const authentication = getAuth();
+    signInWithEmailAndPassword(authentication, data.email, data.password)
+    .then((response) => {
+      setLoading(false);
+      navigate('/')
+      sessionStorage.setItem('Auth Token', response._tokenResponse.refreshToken)
+      window.dispatchEvent(new Event("storage"));
+    })
+    .catch((error) => {
+      console.log(error.code)
+      if (error.code === 'auth/wrong-password') {
+        toast.error('Please check the Password');
+      }
+      if (error.code === 'auth/user-not-found') {
+        toast.error('Email not found, please register');
+      }
+      setLoading(false);
+    })
+  };
+
+  const toastTest = () => {
+    toast.success('Account created successfully!🎉', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'dark'
+      });
+  }
 
   return (
     <div className="h-screen flex items-center justify-center bg-black">
@@ -46,7 +92,9 @@ const Login = () => {
             <div className="h-2"></div>
 
             <Button size="large">Sign In</Button>
+            <button onClick={toastTest}>throw toast</button>
           </form>
+          <ToastContainer />
         </div>
       </div>
     </div>

@@ -6,6 +6,7 @@ const db = require('./db')
 
 const app = express();
 const productRouter = require('./routes/productRouter');
+const userRouter = require('./routes/userRouter');
 
 const Order = require('./models/orderModel');
 
@@ -129,6 +130,8 @@ app.get("/", (req, res) => {
 });
 //get products
 app.use('/api/', productRouter)
+// users
+app.use('/api/', userRouter)
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

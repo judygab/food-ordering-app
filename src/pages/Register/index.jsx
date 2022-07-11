@@ -1,10 +1,59 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Button from '../../components/elements/Button';
 import Text from '../../components/elements/Text';
+import { app } from '../../firebase-config';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import {
+  Routes,
+  Route,
+  useNavigate
+} from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Spinner } from '../../components/elements/Spinner';
 
 const Register = () => {
+  let navigate = useNavigate();
   const { register, handleSubmit } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const [loading, setLoading] = useState(false);
+
+  const onSubmit = (data) => {
+    setLoading(true);
+    const authentication = getAuth();
+    createUserWithEmailAndPassword(authentication, data.email, data.password)
+    .then((response) => {
+      sessionStorage.setItem('Auth Token', response._tokenResponse.refreshToken)
+      window.dispatchEvent(new Event("storage"));
+    })
+    .catch((error) => {
+      if (error.code === 'auth/email-already-in-use') {
+        toast.error('Email Already in Use');
+      }
+    })
+
+    fetch('http://localhost:8080/api/create-user', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: data.email,
+        name: data.name,
+      }).then((response) => {
+        if (response.status === 200) {
+          setLoading(false);
+          navigate('/');
+        } else {
+          console.log(response.json());
+        }
+      }).catch((error) => {
+        setLoading(false);
+        console.log(error);
+      })
+    })
+
+  };
 
   return (
     <div className="h-screen bg-black flex  items-center justify-center">
@@ -58,8 +107,9 @@ const Register = () => {
               />
             </div>
             <div className="h-2"></div>
-            <Button size="large">Register</Button>
+            <Button size="large">{loading ? <Spinner /> : 'Register'}</Button>
           </form>
+          <ToastContainer />
         </div>
       </div>
     </div>
