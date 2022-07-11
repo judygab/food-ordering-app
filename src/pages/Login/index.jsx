@@ -39,6 +39,19 @@ const Login = () => {
     })
   };
 
+  const toastTest = () => {
+    toast.success('Account created successfully!🎉', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'dark'
+      });
+  }
+
   return (
     <div className="h-screen flex items-center justify-center bg-black">
       <div className="rounded-lg max-w-md w-full flex flex-col items-center justify-center relative">
@@ -79,7 +92,9 @@ const Login = () => {
             <div className="h-2"></div>
 
             <Button size="large">Sign In</Button>
+            <button onClick={toastTest}>throw toast</button>
           </form>
+          <ToastContainer />
         </div>
       </div>
     </div>

@@ -109,6 +109,7 @@ const Register = () => {
             <div className="h-2"></div>
             <Button size="large">{loading ? <Spinner /> : 'Register'}</Button>
           </form>
+          <ToastContainer />
         </div>
       </div>
     </div>
