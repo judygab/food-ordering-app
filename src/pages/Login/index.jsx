@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Button from '../../components/elements/Button';
 import Text from '../../components/elements/Text';
@@ -14,11 +15,14 @@ import 'react-toastify/dist/ReactToastify.css';
 const Login = () => {
   let navigate = useNavigate();
   const { register, handleSubmit } = useForm();
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = (data) => {
+    setLoading(true);
     const authentication = getAuth();
     signInWithEmailAndPassword(authentication, data.email, data.password)
     .then((response) => {
+      setLoading(false);
       navigate('/')
       sessionStorage.setItem('Auth Token', response._tokenResponse.refreshToken)
       window.dispatchEvent(new Event("storage"));
@@ -31,6 +35,7 @@ const Login = () => {
       if (error.code === 'auth/user-not-found') {
         toast.error('Email not found, please register');
       }
+      setLoading(false);
     })
   };
 
