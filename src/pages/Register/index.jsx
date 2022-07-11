@@ -1,10 +1,34 @@
 import { useForm } from 'react-hook-form';
 import Button from '../../components/elements/Button';
 import Text from '../../components/elements/Text';
+import { app } from '../../firebase-config';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import {
+  Routes,
+  Route,
+  useNavigate
+} from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Register = () => {
+  let navigate = useNavigate();
   const { register, handleSubmit } = useForm();
-  const onSubmit = (data) => console.log(data);
+
+  const onSubmit = (data) => {
+    const authentication = getAuth();
+    createUserWithEmailAndPassword(authentication, data.email, data.password)
+    .then((response) => {
+      navigate('/')
+      sessionStorage.setItem('Auth Token', response._tokenResponse.refreshToken)
+      window.dispatchEvent(new Event("storage"));
+    })
+    .catch((error) => {
+      if (error.code === 'auth/email-already-in-use') {
+        toast.error('Email Already in Use');
+      }
+    })
+  };
 
   return (
     <div className="h-screen bg-black flex  items-center justify-center">

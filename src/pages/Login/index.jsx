@@ -1,10 +1,38 @@
 import { useForm } from 'react-hook-form';
 import Button from '../../components/elements/Button';
 import Text from '../../components/elements/Text';
+import { app } from '../../firebase-config';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  Routes,
+  Route,
+  useNavigate
+} from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
+  let navigate = useNavigate();
   const { register, handleSubmit } = useForm();
-  const onSubmit = (data) => console.log(data);
+
+  const onSubmit = (data) => {
+    const authentication = getAuth();
+    signInWithEmailAndPassword(authentication, data.email, data.password)
+    .then((response) => {
+      navigate('/')
+      sessionStorage.setItem('Auth Token', response._tokenResponse.refreshToken)
+      window.dispatchEvent(new Event("storage"));
+    })
+    .catch((error) => {
+      console.log(error.code)
+      if (error.code === 'auth/wrong-password') {
+        toast.error('Please check the Password');
+      }
+      if (error.code === 'auth/user-not-found') {
+        toast.error('Email not found, please register');
+      }
+    })
+  };
 
   return (
     <div className="h-screen flex items-center justify-center bg-black">
