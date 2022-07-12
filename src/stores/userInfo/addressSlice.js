@@ -11,7 +11,7 @@ export const addressSlice = createSlice({
         setAddress: (state, action) => {
             return { address: action.payload }
         },
-        clearAddress: (state, action) => {
+        clearAddress: (state) => {
             return { address: {} }
         }
     },

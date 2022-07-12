@@ -4,9 +4,9 @@ import { loadStripe } from '@stripe/stripe-js';
 import { useEffect, useState } from 'react';
 import Button from './elements/Button';
 import { useNavigate } from "react-router-dom";
-import { useSelector } from 'react-redux';
-import { getProductsCart } from '../stores/cart/cartSlice';
-import { getAddress } from '../stores/userInfo/addressSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { clearCart, getProductsCart } from '../stores/cart/cartSlice';
+import { getAddress, clearAddress } from '../stores/userInfo/addressSlice';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
@@ -21,6 +21,7 @@ export const StripeWrapper = () => {
 const PaymentForm = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const dispatch = useDispatch();
     const cart = useSelector(getProductsCart);
     const address = useSelector(getAddress);
     const navigate = useNavigate();
@@ -63,7 +64,9 @@ const PaymentForm = () => {
         if (backendError || stripeError) {
             setError(backendError || stripeError);
         }  else if (paymentIntent.status === 'succeeded') {
-            // clear cart
+            // clear cart and address
+            dispatch(clearAddress());
+            dispatch(clearCart());
             navigate('/payment-success');
         }
         } catch (err) {
