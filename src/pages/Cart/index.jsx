@@ -30,10 +30,7 @@ const Cart = () => {
           </div>
         </div>
         <div className={`tabs ${currentTab !== 'Delivery' ? "hidden" : ""}`}>
-          <AddressForm /> 
-          <div className="flex justify-end p-2">
-            <Button variant="dark" className="flex items-center" onClick={() => handleTabSwitch('Payment')}><span className="mr-1">Next</span><ArrowRightSvg /></Button>
-          </div>
+          <AddressForm onTabSwitch={handleTabSwitch} /> 
         </div>
         <div className={`tabs ${currentTab !== 'Payment' ? "hidden" : ""}`}>
           <StripeWrapper />

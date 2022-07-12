@@ -6,6 +6,7 @@ import Button from './elements/Button';
 import { useNavigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import { getProductsCart } from '../stores/cart/cartSlice';
+import { getAddress } from '../stores/userInfo/addressSlice';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
@@ -21,6 +22,7 @@ const PaymentForm = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const cart = useSelector(getProductsCart);
+    const address = useSelector(getAddress);
     const navigate = useNavigate();
     const elements = useElements();
     const stripe = useStripe();
@@ -28,11 +30,12 @@ const PaymentForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         let uid = sessionStorage.getItem('User Id');
-        if (!stripe || !elements || !cart?.products.length || !uid) {
+        if (!stripe || !elements || !cart?.products.length || !uid || !address) {
             return;
         }
         setLoading(true);
         try {
+            console.log('here');
         // Create payment intent on the server
         const { error: backendError, clientSecret } = await fetch('http://localhost:8080/create-payment-intent', {
             method: 'POST',
@@ -43,8 +46,10 @@ const PaymentForm = () => {
                 paymentMethodType: 'card',
                 currency: 'usd',
                 orderItems: cart.products,
-                userId: uid
+                userId: uid,
+                shippingAddress: address
             })}).then(r => r.json());
+            console.log(clientSecret);
 
         // Confirm the payment on the client
         const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(
@@ -75,7 +80,7 @@ const PaymentForm = () => {
                 <CardElement id="card-element" />
             </div>
             <div className="flex justify-center p-2">
-                <Button type="submit" disabled={true}>{
+                <Button type="submit" disabled={loading}>{
                     loading ? 'Loading...' : 'Pay Now'
                 }</Button>
             </div>
