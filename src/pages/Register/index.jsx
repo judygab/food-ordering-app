@@ -21,8 +21,11 @@ const Register = () => {
   const onSubmit = (data) => {
     setLoading(true);
     const authentication = getAuth();
+    let uid = '';
     createUserWithEmailAndPassword(authentication, data.email, data.password)
     .then((response) => {
+      uid = response.user.uid;
+      sessionStorage.setItem('User Id', uid);
       sessionStorage.setItem('Auth Token', response._tokenResponse.refreshToken)
       window.dispatchEvent(new Event("storage"));
     })
@@ -40,7 +43,8 @@ const Register = () => {
       body: JSON.stringify({
         email: data.email,
         name: data.name,
-      }).then((response) => {
+        _id: uid
+      })}).then((response) => {
         if (response.status === 200) {
           setLoading(false);
           navigate('/');
@@ -51,7 +55,6 @@ const Register = () => {
         setLoading(false);
         console.log(error);
       })
-    })
 
   };
 

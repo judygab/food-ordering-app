@@ -18,7 +18,7 @@ const calculateOrderAmount = (orderItems) => {
   const initialValue = 0;
   const itemsPrice = orderItems.reduce(
     (previousValue, currentValue) =>
-      previousValue + currentValue.price * currentValue.qty,
+      previousValue + currentValue.price * currentValue.amount,
     initialValue
   );
   return itemsPrice * 100;
@@ -82,10 +82,9 @@ app.post('/webhook', async (req, res) => {
 
 app.post('/create-payment-intent', async (req, res) => {
   try {
-    // const { orderItems, shippingAddress, user } = req.body;
-    // const totalPrice = calculateOrderAmount(orderItems);
-    // TEMP
-    const totalPrice = 100;
+    const { orderItems, shippingAddress, userId } = req.body;
+    //const totalPrice = calculateOrderAmount(orderItems) || 0;
+    const totalPrice = 500;
     const paymentIntent = await stripe.paymentIntents.create({
       amount: totalPrice,
       currency: 'usd',
@@ -94,17 +93,17 @@ app.post('/create-payment-intent', async (req, res) => {
     const taxPrice = 0;
     const shippingPrice = 0;
 
-    // const order = new Order({
-    //   orderItems,
-    //   shippingAddress,
-    //   paymentMethod: 'stripe',
-    //   totalPrice,
-    //   taxPrice,
-    //   shippingPrice,
-    //   totalPrice: totalPrice,
-    //   user: user._id,
-    // });
-    // await order.save();
+    const order = new Order({
+      orderItems,
+      shippingAddress,
+      paymentMethod: 'stripe',
+      totalPrice,
+      taxPrice,
+      shippingPrice,
+      user: userId,
+    });
+    await order.save();
+
     res.send({
       clientSecret: paymentIntent.client_secret,
       // orderId: order._id,

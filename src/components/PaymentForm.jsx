@@ -4,6 +4,9 @@ import { loadStripe } from '@stripe/stripe-js';
 import { useEffect, useState } from 'react';
 import Button from './elements/Button';
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
+import { clearCart, getProductsCart } from '../stores/cart/cartSlice';
+import { getAddress, clearAddress } from '../stores/userInfo/addressSlice';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
@@ -18,17 +21,22 @@ export const StripeWrapper = () => {
 const PaymentForm = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const dispatch = useDispatch();
+    const cart = useSelector(getProductsCart);
+    const address = useSelector(getAddress);
     const navigate = useNavigate();
     const elements = useElements();
     const stripe = useStripe();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!stripe || !elements) {
+        let uid = sessionStorage.getItem('User Id');
+        if (!stripe || !elements || !cart?.products.length || !uid || !address) {
             return;
         }
         setLoading(true);
         try {
+            console.log('here');
         // Create payment intent on the server
         const { error: backendError, clientSecret } = await fetch('http://localhost:8080/create-payment-intent', {
             method: 'POST',
@@ -38,7 +46,11 @@ const PaymentForm = () => {
             body: JSON.stringify({
                 paymentMethodType: 'card',
                 currency: 'usd',
-        })}).then(r => r.json());
+                orderItems: cart.products,
+                userId: uid,
+                shippingAddress: address
+            })}).then(r => r.json());
+            console.log(clientSecret);
 
         // Confirm the payment on the client
         const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(
@@ -52,7 +64,9 @@ const PaymentForm = () => {
         if (backendError || stripeError) {
             setError(backendError || stripeError);
         }  else if (paymentIntent.status === 'succeeded') {
-            // clear cart
+            // clear cart and address
+            dispatch(clearAddress());
+            dispatch(clearCart());
             navigate('/payment-success');
         }
         } catch (err) {
@@ -69,7 +83,7 @@ const PaymentForm = () => {
                 <CardElement id="card-element" />
             </div>
             <div className="flex justify-center p-2">
-                <Button type="submit" disabled={true}>{
+                <Button type="submit" disabled={loading}>{
                     loading ? 'Loading...' : 'Pay Now'
                 }</Button>
             </div>
