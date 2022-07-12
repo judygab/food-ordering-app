@@ -4,6 +4,8 @@ import { loadStripe } from '@stripe/stripe-js';
 import { useEffect, useState } from 'react';
 import Button from './elements/Button';
 import { useNavigate } from "react-router-dom";
+import { useSelector } from 'react-redux';
+import { getProductsCart } from '../stores/cart/cartSlice';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
@@ -18,13 +20,15 @@ export const StripeWrapper = () => {
 const PaymentForm = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const cart = useSelector(getProductsCart);
     const navigate = useNavigate();
     const elements = useElements();
     const stripe = useStripe();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!stripe || !elements) {
+        let uid = sessionStorage.getItem('User Id');
+        if (!stripe || !elements || !cart?.products.length || !uid) {
             return;
         }
         setLoading(true);
@@ -38,7 +42,9 @@ const PaymentForm = () => {
             body: JSON.stringify({
                 paymentMethodType: 'card',
                 currency: 'usd',
-        })}).then(r => r.json());
+                orderItems: cart.products,
+                userId: uid
+            })}).then(r => r.json());
 
         // Confirm the payment on the client
         const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(

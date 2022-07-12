@@ -82,7 +82,7 @@ app.post('/webhook', async (req, res) => {
 
 app.post('/create-payment-intent', async (req, res) => {
   try {
-    // const { orderItems, shippingAddress, user } = req.body;
+    // const { orderItems, shippingAddress, userId } = req.body;
     // const totalPrice = calculateOrderAmount(orderItems);
     // TEMP
     const totalPrice = 100;
@@ -102,7 +102,7 @@ app.post('/create-payment-intent', async (req, res) => {
     //   taxPrice,
     //   shippingPrice,
     //   totalPrice: totalPrice,
-    //   user: user._id,
+    //   user: userId,
     // });
     // await order.save();
     res.send({
